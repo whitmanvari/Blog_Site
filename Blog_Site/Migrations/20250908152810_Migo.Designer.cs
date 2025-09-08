@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog_Site.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    [Migration("20250908051044_Migo")]
+    [Migration("20250908152810_Migo")]
     partial class Migo
     {
         /// <inheritdoc />
@@ -45,9 +45,14 @@ namespace Blog_Site.Migrations
                     b.Property<DateTime>("PostedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -69,9 +74,29 @@ namespace Blog_Site.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("Blog_Site.Models.Concrete.PostTag", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("PostTags");
                 });
 
             modelBuilder.Entity("Blog_Site.Models.Concrete.Tag", b =>
@@ -85,12 +110,7 @@ namespace Blog_Site.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PostId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PostId");
 
                     b.ToTable("Tags");
                 });
@@ -106,7 +126,7 @@ namespace Blog_Site.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -122,21 +142,61 @@ namespace Blog_Site.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Blog_Site.Models.Concrete.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Blog_Site.Models.Concrete.Tag", b =>
+            modelBuilder.Entity("Blog_Site.Models.Concrete.Post", b =>
                 {
-                    b.HasOne("Blog_Site.Models.Concrete.Post", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("PostId");
+                    b.HasOne("Blog_Site.Models.Concrete.User", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Blog_Site.Models.Concrete.PostTag", b =>
+                {
+                    b.HasOne("Blog_Site.Models.Concrete.Post", "Post")
+                        .WithMany("PostTags")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blog_Site.Models.Concrete.Tag", "Tag")
+                        .WithMany("PostTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("Blog_Site.Models.Concrete.Post", b =>
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Tags");
+                    b.Navigation("PostTags");
+                });
+
+            modelBuilder.Entity("Blog_Site.Models.Concrete.Tag", b =>
+                {
+                    b.Navigation("PostTags");
+                });
+
+            modelBuilder.Entity("Blog_Site.Models.Concrete.User", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

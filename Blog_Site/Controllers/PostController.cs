@@ -15,10 +15,18 @@ namespace Blog_Site.Controllers
             _context = context;
         }
         // GET: HomeController1
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var posts = await _context.Posts.ToListAsync();
-            return View(posts);
+            var posts = from p in _context.Posts
+                        select p;
+            if ((!String.IsNullOrEmpty(searchString)))
+            {
+                posts = posts.Where(s =>
+                 s.Title.Contains(searchString) ||
+                 s.Content.Contains(searchString)
+                );
+            }
+            return View(await posts.ToListAsync());
         }
 
         // GET: HomeController1/Details/5

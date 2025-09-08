@@ -5,6 +5,13 @@
 @{
     ViewData["Title"] = "Blog Yazıları";
 }
+<form asp-controller="Post" asp-action="Index" method="get">
+    <div class="input-group mb-3">
+        <input type="text" name="searchString" class="form-control" placeholder="Ara...">
+        <button class="btn btn-outline-secondary" type="submit">Ara</button>
+    </div>
+</form>
+
 
 <div class="container mt-5">
     <h1 class="mb-4">Blog Yazıları</h1>

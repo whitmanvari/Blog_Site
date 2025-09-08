@@ -1,5 +1,6 @@
 # Blog_Site
 🚀 Blog App: My First ASP.NET Core MVC Adventure
+
 Hey everyone! 👋 This repository represents my first modern blog application, written with ASP.NET Core MVC, Entity Framework Core, and a lot of C# codes. Every line of code holds a passion, and every function tells a story of learning. This project was not just about building a blog site, but also a journey where I discovered the building blocks of modern web development step by step.
 
 In this project, I touched on many topics, from the magical world of Visual Studio to the database wizard Entity Framework, and even the custom search and comment systems that I coded myself. This isn't just a pile of code; it was a great adventure for me!

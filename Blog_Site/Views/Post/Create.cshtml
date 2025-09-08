@@ -1,0 +1,50 @@
+﻿@* Views/Post/Create.cshtml *@
+
+@model Blog_Site.Models.Concrete.Post
+
+@{
+    ViewData["Title"] = "Yeni Yazı Ekle";
+}
+
+<div class="container mt-5">
+    <h1>Yeni Yazı Ekle</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Create">
+                @* Modelin doğrulanması için gerekli hata özetini gösterir. *@
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="form-group mb-3">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    @* Başlık için doğrulama hata mesajını gösterir. *@
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label asp-for="Content" class="control-label"></label>
+                    <textarea asp-for="Content" class="form-control" rows="10"></textarea>
+                    @* İçerik için doğrulama hata mesajını gösterir. *@
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <input type="submit" value="Oluştur" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mt-3">
+        <a asp-action="Index">Listeye Geri Dön</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        // Form doğrulamasını (validation) etkinleştirmek için bu script'ler gereklidir.[1]
+        // Bu kod, modeldeki Data Annotation'ları (örn. ``) kullanarak
+        // istemci tarafında (tarayıcıda) otomatik doğrulama yapar.[1]
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

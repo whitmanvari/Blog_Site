@@ -1,0 +1,32 @@
+﻿@* Views/Post/Delete.cshtml *@
+
+@model Blog_Site.Models.Concrete.Post
+
+@{
+    ViewData["Title"] = "Yazıyı Sil";
+}
+
+<div class="container mt-5">
+    <h1>Yazıyı Sil</h1>
+    <h3>Bu yazıyı silmek istediğinizden emin misiniz?</h3>
+    <hr />
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">Başlık</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Title)</dd>
+
+            <dt class="col-sm-2">İçerik</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Content)</dd>
+
+            <dt class="col-sm-2">Yayın Tarihi</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.PublishedDate)</dd>
+        </dl>
+
+        <form asp-action="DeleteConfirmed">
+            @* Gizli alan, Id bilgisini POST isteği ile göndermek için kullanılır. *@
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Sil" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Listeye Geri Dön</a>
+        </form>
+    </div>
+</div>

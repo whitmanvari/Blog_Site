@@ -6,16 +6,15 @@
     ViewData["Title"] = "Ana Sayfa";
 }
 
-
 <div class="jumbotron text-center bg-light p-5">
-    <h1 class="display-4">Blog Uygulamasına Hoş Geldiniz!</h1>
-    <p class="lead">Bu kişisel bir blog uygulamasıdır.</p>
+    <h1 class="display-4">Modern Blog Uygulamasına Hoş Geldiniz!</h1>
+    <p class="lead">Burada en son ve en popüler yazıları keşfedin.</p>
 </div>
 
 <div class="container mt-5">
     <h2 class="mb-4">Son Yazılar</h2>
     <div class="row">
-        @if (Model.Any())
+        @if (Model != null && Model.Any())
         {
             @foreach (var post in Model)
             {
@@ -23,7 +22,14 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">@post.Title</h5>
-                            <p class="card-text">@post.Content.Substring(0, Math.Min(post.Content.Length, 100))...</p>
+                            @if (!string.IsNullOrEmpty(post.Content))
+                            {
+                                <p class="card-text">@post.Content.Substring(0, Math.Min(post.Content.Length, 100))...</p>
+                            }
+                            else
+                            {
+                                <p class="card-text">İçerik bulunamadı.</p>
+                            }
                             <p class="card-subtitle mb-2 text-muted">@post.PublishedDate.ToShortDateString() tarihinde yayımlandı.</p>
                             <a asp-controller="Post" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary mt-3">Devamını Oku</a>
                         </div>

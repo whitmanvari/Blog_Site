@@ -11,24 +11,22 @@
     <hr />
     <div class="row">
         <div class="col-md-8">
-            <form asp-action="Create">
-                @* Modelin doğrulanması için gerekli hata özetini gösterir. *@
+            <form asp-action="Create" id="create-post-form">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                
+
                 <div class="form-group mb-3">
                     <label asp-for="Title" class="control-label"></label>
                     <input asp-for="Title" class="form-control" />
-                    @* Başlık için doğrulama hata mesajını gösterir. *@
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
-                
+
                 <div class="form-group mb-3">
                     <label asp-for="Content" class="control-label"></label>
-                    <textarea asp-for="Content" class="form-control" rows="10"></textarea>
-                    @* İçerik için doğrulama hata mesajını gösterir. *@
+                    <div id="editor-container" style="height: 300px;"></div>
+                    <input type="hidden" id="Content" name="Content" asp-for="Content" />
                     <span asp-validation-for="Content" class="text-danger"></span>
                 </div>
-                
+
                 <div class="form-group">
                     <input type="submit" value="Oluştur" class="btn btn-primary" />
                 </div>
@@ -42,9 +40,17 @@
 
 @section Scripts {
     @{
-        // Form doğrulamasını (validation) etkinleştirmek için bu script'ler gereklidir.[1]
-        // Bu kod, modeldeki Data Annotation'ları (örn. ``) kullanarak
-        // istemci tarafında (tarayıcıda) otomatik doğrulama yapar.[1]
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        var quill = new Quill('#editor-container', {
+            theme: 'snow' // Snow theme.
+        });
+
+        var form = document.getElementById('create-post-form');
+        form.onsubmit = function() {
+            var contentInput = document.getElementById('Content');
+            contentInput.value = quill.root.innerHTML;
+        };
+    </script>
 }

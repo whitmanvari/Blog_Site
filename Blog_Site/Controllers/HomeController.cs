@@ -1,15 +1,25 @@
 using System.Diagnostics;
+using Blog_Site.DatabaseConnection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog_Site.Controllers
 {
     public class HomeController : Controller
     {
-       
-
-        public IActionResult Index()
+        private readonly BlogContext _context;
+        public HomeController(BlogContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var latestPost = await _context.Posts
+                .OrderByDescending(p => p.PublishedDate)
+                .Take(5)
+                .ToListAsync();
+            return View(latestPost);
         }
 
         public IActionResult Privacy()

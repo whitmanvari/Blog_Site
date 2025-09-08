@@ -28,12 +28,24 @@ namespace Blog_Site.Controllers
             {
                 return NotFound();
             }
-            var post = await _context.Posts.FirstOrDefaultAsync(m => m.Id == id);
+            var post = await _context.Posts
+                .Include(p=>p.Comments)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
                 return NotFound();
             }
             return View(post);
+        }
+        public async Task<IActionResult> AddComment (Comment comment)
+        {
+            if(ModelState.IsValid)
+            {
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new { id = comment.PostId });
+            }
+            return View("Details", await _context.Posts.FirstOrDefaultAsync(m=> m.Id == comment.PostId));
         }
 
         // GET: HomeController1/Create

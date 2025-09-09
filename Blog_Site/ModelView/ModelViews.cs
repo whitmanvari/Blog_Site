@@ -9,6 +9,7 @@ namespace Blog_Site.ModelView
         public Post? Post { get; set; }
         public Comment? Comment { get; set; }   
         public Tag? Tag { get; set; }
-        
-    }
+        public Register Register { get; set; }
+
+        }
 }

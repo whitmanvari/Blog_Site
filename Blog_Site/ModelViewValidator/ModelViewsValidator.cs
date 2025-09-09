@@ -76,6 +76,12 @@ namespace Blog_Site.ModelViewValidator
                 .MaximumLength(50)
                 .WithMessage("Etiket Adı en fazla 50 karakter olmalıdır.")
                 .When(t => t.Tag != null);
+            RuleFor(r => r.Register.Name)
+                .NotEmpty()
+                .WithMessage("Kayıt adı boş bırakılamaz.");
+            //diğer ruleları yaz register için
+            //migration at
+            //view sayfalarını oluştur.
         }
     }
 }

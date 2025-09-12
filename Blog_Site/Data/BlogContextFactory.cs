@@ -1,5 +1,4 @@
-﻿using Blog_Site.DatabaseConnection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace Blog_Site.Data

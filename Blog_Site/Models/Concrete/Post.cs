@@ -11,7 +11,7 @@
         public Admin? Admin { get; set; }
         public DateTime PublishedDate { get; set; } = DateTime.Now;
         // Navigation properties
-        public List<Comment>? Comments { get; set; } = new List<Comment>();
-        public List<PostTag>? PostTags { get; set; } = new List<PostTag>();
+        public List<Comment>? Comments { get; set; } = [];
+        public List<PostTag>? PostTags { get; set; } = []   ;
     }
 }

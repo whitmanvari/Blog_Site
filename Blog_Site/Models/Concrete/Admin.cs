@@ -5,9 +5,10 @@
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Email { get; set; }
-        public string? PasswordHas { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public List<Post> Posts { get; set; } = new List<Post>();
-        public List<Comment> Comments { get; set; } = new List<Comment>();
+        public string? PasswordHash { get; set; }
+        public string? ConfirmPassword { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+        public List<Post> Posts { get; set; } = [];
+        public List<Comment> Comments { get; set; } = [];
     }
 }

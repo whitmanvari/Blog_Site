@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public List<PostTag>? PostTags { get; set; } = new List<PostTag>();
+        public List<PostTag>? PostTags { get; set; } = [];
     }
 }

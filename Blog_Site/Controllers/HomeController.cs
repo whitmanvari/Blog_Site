@@ -1,5 +1,4 @@
-using System.Diagnostics;
-using Blog_Site.DatabaseConnection;
+using Blog_Site.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +7,7 @@ namespace Blog_Site.Controllers
     public class HomeController : Controller
     {
         private readonly BlogContext _context;
-        public HomeController(BlogContext context)
-        {
-            _context = context;
-        }
+        public HomeController(BlogContext context) => _context = context;
 
         public async Task<IActionResult> Index()
         {

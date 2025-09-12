@@ -11,6 +11,7 @@ namespace Blog_Site
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddDbContext<BlogContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddHttpContextAccessor();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -41,7 +42,7 @@ namespace Blog_Site
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
 
             app.Run();
         }

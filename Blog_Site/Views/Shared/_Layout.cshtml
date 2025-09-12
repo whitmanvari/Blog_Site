@@ -1,53 +1,47 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @* It arranges title dinamically.ViewData infos came from here. *@
     <title>@ViewData["Title"] - BlogApp</title>
-
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Blog App</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">Blog Yazıları</a>
-                        </li>
-                    </ul>
+        <nav class="navbar">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">BlogApp</a>
+
+                <div class="navbar-links">
+                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Home" asp-action="Index">Ana Sayfa</a>
+                        <a asp-controller="Post" asp-action="Index">Yazılar</a>
+                        <a asp-controller="Account" asp-action="Logout">Çıkış Yap</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login">Giriş</a>
+                        <a asp-controller="Account" asp-action="Register">Kayıt Ol</a>
+                    }
                 </div>
             </div>
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="container body-content">
+        @RenderBody()
+    </main>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Blog App maden by Hazal İlik - <a asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
+    <footer class="footer">
+        <div class="container text-center">
+            <p>BlogApp © 2025 - Tüm hakları saklıdır.</p>
         </div>
     </footer>
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

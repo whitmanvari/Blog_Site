@@ -3,30 +3,39 @@
     ViewData["Title"] = "Giriş Yap";
 }
 
-<h1>Giriş Yap</h1>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Login">
-            <div asp-validation-summary="ModelOnly" class="text-danger">
+@section Styles {
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-4">
+        <div class="card p-4">
+            <h2 class="mb-4 text-center">Giriş Yap</h2>
+            <form asp-action="Login" method="post" novalidate>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="UserRegister.Email" class="form-label">E-posta</label>
+                    <input asp-for="UserRegister.Email" class="form-control" type="email" />
+                    <span asp-validation-for="UserRegister.Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="UserRegister.Password" class="form-label">Şifre</label>
+                    <input asp-for="UserRegister.Password" class="form-control" type="password" />
+                    <span asp-validation-for="UserRegister.Password" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                </div>
+            </form>
+
+            <div class="text-center mt-3">
+                <a asp-controller="Account" asp-action="Register" class="link-primary">Hesabın yok mu? Kayıt ol</a>
             </div>
-            <div class="form-group">
-                <label asp-for="UserRegister.Email" class="control-label"></label>
-                <input asp-for="UserRegister.Email" class="form-control" />
-                <span asp-validation-for="UserRegister.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserRegister.Password" class="control-label"></label>
-                <input asp-for="UserRegister.Password" class="form-control" type="password" />
-                <span asp-validation-for="UserRegister.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Giriş Yap" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-<div>
-    <p>Hesabınız yok mu? <a asp-action="Register">Kayıt Ol</a></p>
 </div>
 
 @section Scripts {

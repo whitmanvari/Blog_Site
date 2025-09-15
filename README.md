@@ -26,7 +26,7 @@ Smart Search Bar: Finding the post you want is now effortless! You can filter po
 
 Commenting System: I added the ability for readers to leave comments on each post, making the blog more interactive.
 
-Rich Text Editor: No more plain text! I integrated a rich text editor (TinyMCE) so I can format my posts with images, lists, and different styles, allowing for more creative content.
+Rich Text Editor: No more plain text! I integrated a rich text editor (quill) so I can format my posts with images, lists, and different styles, allowing for more creative content.
 
 Organized Folder Structure: Based on the MVC principles I learned, I organized my code into clear folders like Controllers, Views, and Models. This keeps the project clean and easy to manage as it grows.   
 

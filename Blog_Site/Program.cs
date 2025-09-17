@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Blog_Site.Data;
 using Blog_Site.Middlewares;
+using Blog_Site.Filters;
 
 namespace Blog_Site
 {
@@ -18,6 +19,8 @@ namespace Blog_Site
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDistributedMemoryCache();
+            // Added filters with dependency injection into the container.
+            builder.Services.AddScoped<ActionFilter>();
 
             builder.Services.AddSession(opt =>
             {

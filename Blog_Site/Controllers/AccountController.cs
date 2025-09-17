@@ -4,6 +4,7 @@ using Blog_Site.ModelView;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -12,8 +13,30 @@ namespace Blog_Site.Controllers
     public class AccountController : Controller
     {
         private readonly BlogContext _context;
-        public AccountController(BlogContext context) => _context = context;
 
+        public AccountController(BlogContext context)
+        {
+            _context = context;
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            HttpContext.Session.SetString("AdminName", "Hazal İlik");
+            var sessionAdminName = HttpContext.Session.GetString("AdminName");
+
+            var cookieOptions = new CookieOptions
+            {
+                Expires = DateTime.Now.AddMinutes(30),
+                HttpOnly = true,
+                IsEssential = true
+            };
+            Response.Cookies.Append("AdminName", "Hazal İlik", cookieOptions);
+            var cookieAdminName= Request.Cookies["AdminName"];
+
+            ViewBag.SessionAdminName = sessionAdminName;
+            ViewBag.CookieAdminName = cookieAdminName;
+        }
         [HttpGet]
         public IActionResult Login()
         {

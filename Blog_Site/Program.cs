@@ -16,6 +16,15 @@ namespace Blog_Site
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddSession(opt =>
+            {
+                opt.IdleTimeout = TimeSpan.FromMinutes(30);
+                opt.Cookie.HttpOnly = true;
+                opt.Cookie.IsEssential = true;
+            });
+
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -36,6 +45,11 @@ namespace Blog_Site
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                Secure = CookieSecurePolicy.Always, //Always HTTPS request (security)
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

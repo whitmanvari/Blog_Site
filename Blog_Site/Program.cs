@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Blog_Site.Data;
+using Blog_Site.Middlewares;
 
 namespace Blog_Site
 {
@@ -40,7 +41,7 @@ namespace Blog_Site
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            app.UseMiddleware<RequestTimingMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

@@ -32,7 +32,7 @@ namespace Blog_Site.Controllers
                 IsEssential = true
             };
             Response.Cookies.Append("AdminName", "Hazal İlik", cookieOptions);
-            var cookieAdminName= Request.Cookies["AdminName"];
+            var cookieAdminName = Request.Cookies["AdminName"];
 
             ViewBag.SessionAdminName = sessionAdminName;
             ViewBag.CookieAdminName = cookieAdminName;
@@ -58,8 +58,8 @@ namespace Blog_Site.Controllers
             {
                 var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, user.UserName),
-            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.Name, user ?.UserName),
+            new(ClaimTypes.Email, user?.Email),
             new(ClaimTypes.Role, "User")
         };
 
@@ -147,7 +147,7 @@ namespace Blog_Site.Controllers
                     var newAdmin = new Admin
                     {
                         Email = model.AdminRegister.Email,
-                        PasswordHash = model.AdminRegister.Password, 
+                        PasswordHash = model.AdminRegister.Password,
                         Name = model.AdminRegister.Name,
                         CreatedAt = DateTime.Now
                     };

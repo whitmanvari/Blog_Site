@@ -9,5 +9,6 @@ namespace Blog_Site.Models.Concrete
         public string? Password { get; set; }
         public string? ConfirmPassword { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public int Id { get; set; }
     }
 }

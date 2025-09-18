@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Blog_Site.Filters
 {
@@ -30,8 +31,7 @@ namespace Blog_Site.Filters
             var user = context.HttpContext.User;
             if(!user.Identity.IsAuthenticated)
             {
-                // If the user is not authenticated, redirect to the login page
-                context.HttpContext.Response.Redirect("/Account/Login");
+                context.Result = new RedirectToActionResult("Login", "Account", null);
             }
         }
     }

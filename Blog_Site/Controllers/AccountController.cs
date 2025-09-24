@@ -52,14 +52,14 @@ namespace Blog_Site.Controllers
             }
             var email = model.UserRegister?.Email; //Login için modeldeki emaili çekeriz.
             var password = model.UserRegister?.Password; //Login için modeldeki şifreyi çekeriz.
-            if(string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 ModelState.AddModelError(string.Empty, "E-mail or Password cannot be empty!");
                 return View(model);
             }
             //User Login Control (created a new Claim object. It will arrange user's authentication and authorization )
-            var user = await _context.Users.FirstOrDefaultAsync(u=> u.Email == email && u.PasswordHash == password);
-            if(user != null)
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.PasswordHash == password);
+            if (user != null)
             {
                 //ıt comes from system.security.claims
                 //[Authorize(Roles="User")] --> we can use it like this.
@@ -70,9 +70,30 @@ namespace Blog_Site.Controllers
                     new(ClaimTypes.Email, user.Email),
                     new(ClaimTypes.Role, "User")
                 };
+                //asp.net core authentication cookie scheme
+                //claimsIdentity comes from system.security.claims
+                //CookieAuthanticationDefaults comes from Microsoft.AspNetCore.Authentication.Cookies
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                return RedirectToAction("Index", "Home");
             }
-            //Admin Login Control
 
+            //Admin Login Control
+            var admin = await _context.Admin.FirstOrDefaultAsync(a => a.Email == email && a.PasswordHash == password);
+            if (admin != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new(ClaimTypes.Name, admin.Name),
+                    new(ClaimTypes.Email, admin.Email),
+                    new(ClaimTypes.Role, "Admin")
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                return RedirectToAction("Index", "Home");
+            }
+            ModelState.AddModelError(string.Empty, "Invalid email or password.");
+            return View(model);
         }
 
 

@@ -7,9 +7,9 @@ namespace Blog_Site.Data
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // PostTag için bileşik anahtarı tanımlıyoruz. [1, 2]
+            // For PostTag we arrange keys. [1, 2]
             modelBuilder.Entity<PostTag>()
-       .HasKey(pt => new { pt.PostId, pt.TagId });
+             .HasKey(pt => new { pt.PostId, pt.TagId });
 
             modelBuilder.Entity<PostTag>()
              .HasOne(pt => pt.Post)
@@ -21,12 +21,11 @@ namespace Blog_Site.Data
              .WithMany(t => t.PostTags)
              .HasForeignKey(pt => pt.TagId);
 
-
             modelBuilder.Entity<Comment>()
-         .HasOne(c => c.User)
-         .WithMany(u => u.Comments)
-         .HasForeignKey(c => c.UserId)
-         .OnDelete(DeleteBehavior.Restrict);
+             .HasOne(c => c.User)
+             .WithMany(u => u.Comments)
+             .HasForeignKey(c => c.UserId)
+             .OnDelete(DeleteBehavior.Restrict);
         }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }

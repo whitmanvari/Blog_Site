@@ -44,49 +44,35 @@ namespace Blog_Site.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string Email, string Password)
+        public async Task<IActionResult> Login(ModelViews model)
         {
-            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "E-posta ve şifre zorunludur.");
-                return View(new ModelViews());
+                return View(model);
             }
-
-            // Önce User tablosunda ara
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == Email && u.PasswordHash == Password);
-            if (user != null)
+            var email = model.UserRegister?.Email; //Login için modeldeki emaili çekeriz.
+            var password = model.UserRegister?.Password; //Login için modeldeki şifreyi çekeriz.
+            if(string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
+                ModelState.AddModelError(string.Empty, "E-mail or Password cannot be empty!");
+                return View(model);
+            }
+            //User Login Control (created a new Claim object. It will arrange user's authentication and authorization )
+            var user = await _context.Users.FirstOrDefaultAsync(u=> u.Email == email && u.PasswordHash == password);
+            if(user != null)
+            {
+                //ıt comes from system.security.claims
+                //[Authorize(Roles="User")] --> we can use it like this.
+
                 var claims = new List<Claim>
-        {
-            new(ClaimTypes.Name, user ?.UserName),
-            new(ClaimTypes.Email, user?.Email),
-            new(ClaimTypes.Role, "User")
-        };
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                return RedirectToAction("Index", "Home");
+                {
+                    new(ClaimTypes.Name, user.UserName),
+                    new(ClaimTypes.Email, user.Email),
+                    new(ClaimTypes.Role, "User")
+                };
             }
+            //Admin Login Control
 
-            // Admin tablosunda ara
-            var admin = await _context.Admin.FirstOrDefaultAsync(a => a.Email == Email && a.PasswordHash == Password);
-            if (admin != null)
-            {
-                var claims = new List<Claim>
-        {
-            new(ClaimTypes.Name, admin.Name),
-            new(ClaimTypes.Email, admin.Email),
-            new(ClaimTypes.Role, "Admin")
-        };
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                return RedirectToAction("Index", "Home");
-            }
-
-            // Eğer bulunamadıysa hata
-            ModelState.AddModelError(string.Empty, "Geçersiz e-posta veya şifre!");
-            return View(new ModelViews());
         }
 
 
